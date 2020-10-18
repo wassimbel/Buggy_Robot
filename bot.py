@@ -1,13 +1,15 @@
-from time import sleep
+from time import sleep, time
 import RPi.GPIO as gpio
 
-
-left_back = 7
-left_forward = 11
-right_back = 13
-right_forward = 15
-left_sensor = 3
-right_sensor = 8
+left_forward = 7
+left_back = 11
+right_forward = 13
+right_back = 15
+left_sensor = 29
+right_sensor = 33
+servo_pin = 18
+pinTrigger = 
+pinEcho = 
 
 
 def setup():
@@ -28,42 +30,47 @@ def setup():
     gpio.setup(left_sensor, gpio.IN)
     """ setup the right sensor to receive input state """
     gpio.setup(right_sensor, gpio.IN)
+    """ servomotot setup"""
+    gpio.setup(servo_pin, gpio.OUT)
+    """ setup sound sensor """
+    gpio.setup(pinTrigger, GPIO.OUT)  # Trigger
+    gpio.setup(pinEcho, GPIO.IN)  # Echo
 
 
 def forward():
     """ function to drive the robot forward """
     setup()
-    gpio.output(7, False)
-    gpio.output(11, True)
-    gpio.output(13, False)
-    gpio.output(15, True)
+    gpio.output(7, True)
+    gpio.output(11, False)
+    gpio.output(13, True)
+    gpio.output(15, False)
 
 
 def backward():
     """ function to drive the robot backward """
     setup()
-    gpio.output(7, True)
-    gpio.output(11, False)
-    gpio.output(13, True)
-    gpio.output(15, False)
+    gpio.output(7, False)
+    gpio.output(11, True)
+    gpio.output(13, False)
+    gpio.output(15, True)
 
 
 def pivot_right():
     """ function to make the robot pivot to the right """
     setup()
-    gpio.output(7, True)
-    gpio.output(11, False)
-    gpio.output(13, False)
-    gpio.output(15, True)
+    gpio.output(7, False)
+    gpio.output(11, True)
+    gpio.output(13, True)
+    gpio.output(15, False)
 
 
 def pivot_left():
     """ function to make the robot pivot to the left """
     setup()
-    gpio.output(7, False)
-    gpio.output(11, True)
-    gpio.output(13, True)
-    gpio.output(15, False)
+    gpio.output(7, True)
+    gpio.output(11, False)
+    gpio.output(13, False)
+    gpio.output(15, True)
 
 
 def turn_left():
@@ -71,15 +78,15 @@ def turn_left():
     setup()
     gpio.output(7, False)
     gpio.output(11, False)
-    gpio.output(13, False)
-    gpio.output(15, True)
+    gpio.output(13, True)
+    gpio.output(15, False)
 
 
 def turn_right():
     """ function to make the robot pivot to the right """
     setup()
-    gpio.output(7, False)
-    gpio.output(11, True)
+    gpio.output(7, True)
+    gpio.output(11, False)
     gpio.output(13, False)
     gpio.output(15, False)
 
@@ -106,14 +113,30 @@ def cleanup():
     gpio.cleanup()
 
 
-def test():
-    """ just testing some stuff """
+def servo1():
     setup()
-    if gpio.input(3) == 0:
-        print('on')
-    else:
-        pivot_left()
-        sleep(1)
-    cleanup()
+    servo1 = gpio.PWM(18, 50)
+    servo1.start(0)
+    sleep(1)
+    servo1.ChangeDutyCycle(2)
+    duty = 2
+    while duty <= 12:
+        servo1.ChangeDutyCycle(duty)
+        sleep(0.3)
+        servo1.ChangeDutyCycle(0)
+        sleep(0.7)
+        duty += 1
+    servo1.stop()
 
-follow_line()
+
+def distance():
+    gpio.output(pinTrigger, true)
+    time.sleep(0.00001)
+    gpio.output(pinTrigger, false)
+    when_start = time()
+    while not gpio.input(pinEcho):
+        when_finished = when_start
+    while gpio.input(pinEcho):
+        when_finished = time()
+    if when_finished - when_start >= 0.08
+        

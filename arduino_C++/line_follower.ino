@@ -7,29 +7,15 @@ AF_DCMotor motor3(3, MOTOR34_64KHZ);
 AF_DCMotor motor4(4, MOTOR34_64KHZ);
 
 void setup() {
- Serial.begin(9600);
-pinMode(A4, INPUT);
-pinMode(A5, INPUT);
-motor1.setSpeed(100);
-motor2.setSpeed(100);
-motor3.setSpeed(100);
-motor4.setSpeed(100);
+  Serial.begin(9600);
+  pinMode(A4, INPUT);
+  pinMode(A5, INPUT);
+  motor1.setSpeed(100);
+  motor2.setSpeed(100);
+  motor3.setSpeed(100);
+  motor4.setSpeed(100);
 }
 
-void test() {
-  if (digitalRead(A5))
-      Serial.print("seen\n");
-  if (!digitalRead(A5))
-      Serial.print("not seen\n");
-}
-void follow_line() {
-  if ((!digitalRead(A4)) && (!digitalRead(A5)))
-      forward();
-  if ((digitalRead(A4)) && (!digitalRead(A5)))
-      turn_left();
-  if ((!digitalRead(A4)) && digitalRead(A5))
-      turn_right();
-}
 
 void pivot_right() {
   motor1.run(FORWARD);
@@ -78,6 +64,14 @@ void freeze() {
   motor2.run(RELEASE);
   motor3.run(RELEASE);       
   motor4.run(RELEASE);
+}
+
+void follow_line() {
+  if ((!digitalRead(A4)) && (!digitalRead(A5)))                                                                               forward();
+  if ((digitalRead(A4)) && (!digitalRead(A5)))
+      turn_left();
+  if ((!digitalRead(A4)) && digitalRead(A5))
+      turn_right();
 }
 
 void loop() {

@@ -8,8 +8,8 @@ right_back = 15
 left_sensor = 29
 right_sensor = 33
 servo_pin = 18
-pinTrigger = 
-pinEcho = 
+pinTrigger = 35
+pinEcho = 37
 
 
 def setup():
@@ -139,4 +139,3 @@ def distance():
     while gpio.input(pinEcho):
         when_finished = time()
     if when_finished - when_start >= 0.08
-        

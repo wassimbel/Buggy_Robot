@@ -1,8 +1,3 @@
-/* first version of the avoid obstacle robot.
-   uses 1 hc-sr04, hc-srf05 with a small angle each and 2 distance sensor.
-   very fast but not 100% accurate due to the lack of accuracy of the hc-... snesors 
-   when the angle of the obstacle is more than 25 degree */
- 
 #include <SoftwareSerial.h>
 #include <AFMotor.h>
 #include <Servo.h>
@@ -12,7 +7,13 @@
 #define echo A3
 #define right_obstacle A0
 #define left_obstacle A1
+#define trig2 2
+#define echo2 9
 
+
+/* another version of the avoid obstacle robot, more accurate but much slower
+   due to the bad accuracy of the hc-sr04, hc srf05,.. when the angle is more than 25 degree
+   this one uses only one hc-sr04 with a servo motor sg90 to check left and right too. */
 
 // initialize the motors and the servo motor
 
@@ -26,6 +27,11 @@ Servo myservo;
 long duration;
 int how_far;
 int where_am_i;
+int where_am_i2;
+int where_am_i3;
+int pos;
+bool right;
+bool left;
 // setup the speed of motors, servo motor, and input, output pins
 
 void setup() {
@@ -37,6 +43,8 @@ void setup() {
   pinMode(left_obstacle, INPUT);
   pinMode(trig, OUTPUT);
   pinMode(echo, INPUT);
+  pinMode(trig2, OUTPUT);
+  pinMode(echo2, INPUT);
   motor1.setSpeed(155);
   motor2.setSpeed(155);
   motor3.setSpeed(155);
@@ -106,10 +114,19 @@ void freeze() {
   motor4.run(RELEASE);
 }
 
+// make the robot follow a line(in this case black line)
+void follow_line() {
+  if ((!digitalRead(right_track)) && (!digitalRead(left_track)))
+      forward();
+  if ((digitalRead(right_track)) && (!digitalRead(left_track)))
+      turn_left();
+  if ((!digitalRead(right_track)) && digitalRead(left_track))
+      turn_right();
+}
+
 // returns the distance between the robot and the obstacle
 
 int distance1() {
-  myservo.write(0);
   digitalWrite(trig, LOW);
   delay(5);
   digitalWrite(trig, HIGH);
@@ -121,65 +138,39 @@ int distance1() {
   return(how_far);
 }
 
+
 // make the robot move without hitting obstacles
 
 void avoid_obstacle() {
-  while (true) {
-    where_am_i = distance1();
-    if (where_am_i > 25 && (digitalRead(right_obstacle)) && (digitalRead(left_obstacle)))
-    {
+      myservo.write(25);
+      where_am_i2 = distance1();
+      delay(1500);
+      myservo.write(125);
+      where_am_i3 = distance1();
+      delay(1500);
+      myservo.write(77);
+      where_am_i = distance1();
+      delay(1000);
+    if (where_am_i > 25 && where_am_i3 > 25 && where_am_i2 > 25) {
       forward();
       delay(500);
-      where_am_i = distance1();
+      freeze();
     }
-    if (where_am_i > 25 && (!digitalRead(right_obstacle)) && (!digitalRead(left_obstacle)))
+    else
     {
       freeze();
       delay(1000);
       backward();
-      delay(1000);
+      delay(100);
       pivot_right();
-      delay(500);
-      where_am_i = distance1();
-    }
-    
-    if (where_am_i > 25 && (!digitalRead(right_obstacle)) && (digitalRead(left_obstacle)))
-    {
-      turn_left();
-      delay(1000);
-      where_am_i = distance1();
-    }
-    if (where_am_i > 25 && (digitalRead(right_obstacle)) && (!digitalRead(left_obstacle)))
-    {
-      turn_right();
-      delay(1000);
-      where_am_i = distance1();
-    }
-    if (where_am_i <= 10 && (digitalRead(right_obstacle)) && (digitalRead(left_obstacle)))
-    {
+      delay(300);
       freeze();
-      delay(1000);
-      backward();
-      delay(500);
-      where_am_i = distance1();
-      pivot_left();
-      delay(500);
-    }
-    if (where_am_i <= 25 && (digitalRead(right_obstacle)) && (digitalRead(left_obstacle)))
-    {
-      freeze();
-      delay(1000);
-      backward();
-      delay(500);
-      pivot_right();
-      delay(500);
-      where_am_i = distance1();
-    }
-  }
+     }
 }
 
-// running this loop repeatedly
+
 
 void loop() {
   avoid_obstacle();
 }
+

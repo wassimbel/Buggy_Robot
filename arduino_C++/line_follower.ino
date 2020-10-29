@@ -1,3 +1,6 @@
+/* line follower robot using 2 tcrt5000 sensors,
+   accuracy increases when decreasing the speed of motors. */
+
 #include <SoftwareSerial.h>
 #include <AFMotor.h>
 #define right_track A4

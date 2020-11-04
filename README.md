@@ -11,26 +11,20 @@ or arduino uno r3 as a hardware and C, C++ and C ardunio as programming language
 [AUTHORS](https://www.linkedin.com/in/wassim-belhedi-7141101a2/)
 ---
 
-# Current features
-<<<<<<< HEAD
+[Current features]
 *Line follower robot.
 
 *Obstacle avoiding robot.
 
-#Installation
+[Installation]
 clone the repository
 
-#Usage
+[Usage]
 connect via ssh to your pi or just upload the code to your arduino
 
-#Contributing
+[Contributing]
 wassim bel hedi
 
 #Related projects
 
 #Licensing
-=======
-1.Line follower robot.
-
-2.Obstacle avoiding robot.
->>>>>>> 18c7e82f0b71d7077ee825915643f8ea468d1904

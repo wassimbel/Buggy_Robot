@@ -12,6 +12,7 @@ or arduino uno r3 as a hardware and C, C++ and C ardunio as programming language
 ---
 
 # Current features
+<<<<<<< HEAD
 *Line follower robot.
 
 *Obstacle avoiding robot.
@@ -28,3 +29,8 @@ wassim bel hedi
 #Related projects
 
 #Licensing
+=======
+1.Line follower robot.
+
+2.Obstacle avoiding robot.
+>>>>>>> 18c7e82f0b71d7077ee825915643f8ea468d1904

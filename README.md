@@ -1,3 +1,9 @@
+<p align="center">
+  <img src="https://www.intorobotics.com/wp-content/uploads/2017/05/004_opt.jpg"
+       alt="Buggy"
+  />
+</p>
+
 <center> <h2> Building a buggy robot </h2> </center>
 The repository contains different functions using raspberry pi 3b+ as a hardware and Python3 as a programming language,
 or arduino uno r3 as a hardware and C, C++ and C ardunio as programming languages.
